@@ -1,0 +1,509 @@
+<BL>:
+	id: bl
+	orientation: 'vertical'
+	canvas.before:
+		Color:
+			rgba: (1, 1, 1, 1)
+		Rectangle:
+			source: 'image/fon.jpg'
+			size: root.width, root.height
+			pos: self.pos
+
+	ActionBar:
+		id: action_bar
+		size: (root.width, 50)
+		pos: 0,550
+		canvas:
+			Color:
+				rgba: (.05, .31, .33, 1)
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
+		ActionView:
+			id: action_view
+			ActionPrevious:
+				id: action_previous 
+				app_icon: 'image/logo.png' 
+				title: 'КЛПТ'
+				with_previous: False 
+				on_release: app.root.ids.sm.current = 'menu'
+
+		
+
+	ScreenManager:
+		id: sm
+		Menu_admin:
+		Course:
+			id: course
+		Add_less:
+		Add_group:
+		Group:
+			id: group
+			num_course: course.num_course
+		Lessons:
+			on_pre_enter:
+            	self.lesson()
+			
+<Main_Button@Button>:
+	font_size: 18
+	valign: "center"
+	halign: "center"
+	text_size: self.size
+	size: self.texture_size
+	size_hint_y: None
+	font_name: 'Roboto-Bold'
+	background_normal: 'image/main_b.png'
+	background_down: 'image/main_b_down.png'
+	size_hint: (0.45, .75)
+
+
+<Menu_admin>:
+
+	name: 'menu'
+	BoxLayout:
+		padding: 0, 0, 10, 0 
+		orientation: 'vertical'
+
+		Image:
+			source: 'image/logo.png'
+			size_hint: 1, None 
+			allow_stretch: True 
+			height: 350
+
+		FloatLayout:
+
+			
+			Main_Button:
+				text: "Расписание"
+				pos_hint: {'x': 0.3, 'y': 0.5}
+				on_release: app.root.ids.sm.current = 'course'
+			Main_Button:
+				text: "Добавить \n группу"				
+				pos_hint: {'x': 0, 'y': 0}	
+				on_release: app.root.ids.sm.current = 'add_g'
+			Main_Button:
+				text: "Добавить \n расписание"				
+				pos_hint: {'x': 0.6, 'y': 0}	
+				on_release: app.root.ids.sm.current = 'add_l'
+
+<Add_Label@Label>:
+	id: root.text
+	font_name: 'Roboto-Bold'
+	color: 0, 0, 0, 1
+	backgroundcolor: 0, 0, 0, 1
+	font_size: 20
+	halign: "center"
+	valign: "center"
+	size_hint: None, None
+	size: (200, 50)
+
+<Add_TextInput@TextInput>:
+	id: root.text
+	valign: "center" 
+	size_hint: None, None
+	size: (200, 50)
+
+<Add_less>:
+	
+	name: 'add_l'
+	date_input: date_input.text
+	course_input: course_input.text 
+	group_input: group_input.text
+	title_num_input: title_num_input.text
+	title_input: title_input.text
+	fio_input: fio_input.text
+	build_input: build_input.text
+
+	FloatLayout:
+		size_hint: None, None
+		size: (420, 650)
+		Label:
+			text: 'Введите данные'
+			color: 0, .36, .63, 1
+			font_name: 'Roboto-Bold'
+			font_size: 30
+			pos: 0, 250
+			halign: "center"
+			valign: "center" 
+		
+		GridLayout:
+
+			id: 'gladd'
+			cols: 2
+			padding: 0, 0, 30, 0
+			pos: 0, 150
+			size_hint: None, None
+			size: (400, 450)
+			BoxLayout:
+				id: 'Box1'
+				orientation: 'vertical'
+				Add_Label:
+					text: 'Дата'
+					
+				Add_Label:
+					text: 'Курс'
+
+				Add_Label:
+					text: 'Группа'
+
+				Add_Label:
+					text: 'Номер пары'
+
+				Add_Label:
+					text: 'Предмет'
+
+				Add_Label:
+					text: 'Преподаватель'
+
+				Add_Label:
+					text: 'Аудитория'
+
+
+
+
+			BoxLayout:
+				id: 'Box2'
+				orientation: 'vertical'
+				Add_TextInput:
+	            	id: date_input
+	            	text: 'Введите дату'
+	            	
+	            Add_TextInput:
+	            	id: course_input
+	            	text: 'Введите курс'
+
+	            Add_TextInput:
+	            	id: group_input
+	            	text: 'Введите группу'
+
+				Add_TextInput:
+	            	id: title_num_input
+	            	text: 'Введите номер пары'
+
+	            Add_TextInput:
+	            	id: title_input
+	            	text: 'Введите предмет'
+
+	            Add_TextInput:
+	            	id: fio_input
+	            	text: 'Введите ФИО'
+
+	            Add_TextInput:
+	    			id: build_input
+	            	text: 'Введите аудиторию'
+
+		Button:
+		    text: 'Очистить'
+		    pos: 120, 100
+		    size_hint: (.3, .05)
+		    background_normal: 'image/Button.png'
+			background_down: 'image/Button_down.png'
+		    on_release: root.clear_inputs([date_input, course_input, title_num_input, group_input, title_input, fio_input, build_input]) 
+		Button:
+		    text: 'Добавить'
+		    pos: 250, 100
+		    size_hint: (.3, .05)
+		    background_normal: 'image/Button.png'
+			background_down: 'image/Button_down.png'
+		    on_press: root.add_less()
+
+
+<Add_group>:
+	
+	name: 'add_g'
+	course_input_g: course_input_g.text 
+	group_input_g: group_input_g.text
+
+	FloatLayout:
+		size_hint: None, None
+		size: (420, 650)
+		Label:
+			text: 'Введите данные'
+			color: 0, .36, .63, 1
+			font_name: 'Roboto-Bold'
+			font_size: 30
+			pos: 0, 250
+			halign: "center"
+			valign: "center" 
+		
+		GridLayout:
+
+			id: 'gladd_g'
+			cols: 2
+			padding: 0, 0, 30, 0
+			pos: 0, 400
+			size_hint: None, None
+			size: (400, 300)
+			BoxLayout:
+				id: 'Box1group'
+				orientation: 'vertical'
+
+				Add_Label:
+					text: 'Курс'
+
+				Add_Label:
+					text: 'Группа'
+
+
+
+
+
+			BoxLayout:
+				id: 'Box2group'
+				orientation: 'vertical'
+	            Add_TextInput:
+	            	id: course_input_g
+	            	text: 'Введите курс'
+
+	            Add_TextInput:
+	            	id: group_input_g
+
+	            	text: 'Введите группу'
+
+		Button:
+		    text: 'Очистить'
+		    pos: 120, 350
+		    size_hint: (.3, .05)
+		    background_normal: 'image/Button.png'
+			background_down: 'image/Button_down.png'
+		    on_release: root.clear_inputs([course_input_g, group_input_g]) 
+		Button:
+		    text: 'Добавить'
+
+		    pos: 250, 350
+		    size_hint: (.3, .05)
+			background_normal: 'image/Button.png'
+			background_down: 'image/Button_down.png'
+		    on_press: root.add_group()
+
+
+<CircularButton>:
+    button: button
+    canvas.before:
+        StencilPush
+        Ellipse:
+            # self.pos and self.size should work here
+            # adjustments are just hacks to get it to look right
+            pos: self.x+1, self.y+2
+            size: self.width-2, self.height-2
+        StencilUse
+    canvas.after:
+        StencilUnUse
+        Ellipse:
+            pos: self.x+1, self.y+2
+            size: self.width-2, self.height-2
+        StencilPop
+    Button:
+        id: button
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        size_hint: None, None
+        size: root.size
+
+
+<Course>:
+	 
+	name: 'course'
+	BoxLayout:
+		orientation: 'vertical'
+		Button:
+			id: 1_c
+			text: '1 курс'
+			background_color: .47, 1.22, 1.19, 1
+			size_hint_y: 1
+			size_hint_x: .8
+			pos_hint: {"x":0, "top":.5}
+			font_size: 20
+			size: self.texture_size
+			font_name: 'Roboto-Bold'
+			on_release:
+				root.num_course = 1
+				app.root.ids.sm.current = 'group'
+		CircularButton:
+			id: 2_c
+			text: '2 курс'
+			background_color: .47, 1.22, 1.19, 1
+			size_hint_y: 1
+			size_hint_x: .8
+			pos_hint: {"x":.05, "top":.5}
+			font_size: 20
+			size: self.texture_size
+			font_name: 'Roboto-Bold'
+			on_release:
+				root.num_course = 2
+				app.root.ids.sm.current = 'group'
+		CircularButton:
+			id: 3_c
+			text: '3 курс'
+			background_color: .47, 1.22, 1.19, 1
+			size_hint_y: 1
+			size_hint_x: .8
+			pos_hint: {"x":.1, "top":.5}
+			font_size: 20
+			size: self.texture_size
+			font_name: 'Roboto-Bold'
+			on_release:
+				root.num_course = 3
+				app.root.ids.sm.current = 'group'
+		CircularButton:
+			id: 4_c
+			text: '4 курс'
+			background_color: .47, 1.22, 1.19, 1
+			size_hint_y: 1
+			size_hint_x: .8
+			pos_hint: {"x":.15, "top":.5}
+			font_size: 20
+			size: self.texture_size
+			font_name: 'Roboto-Bold'
+			on_release:
+				root.num_course = 4
+				app.root.ids.sm.current = 'group'
+		Button:
+			id: 5_c
+			text: '5 курс'
+			background_color: .47, 1.22, 1.19, 1
+			size_hint_y: 1
+			size_hint_x: .8
+			pos_hint: {"x":.2, "top":.5}
+			font_size: 20
+			size: self.texture_size
+			font_name: 'Roboto-Bold'
+			on_release:
+				root.num_course = 5
+				app.root.ids.sm.current = 'group'
+
+
+
+<CustomButton>: 
+    id: root.text 
+    size_hint_y: None
+    height: 70
+    on_release: root.text
+    border: (20, 20, 20, 20)
+    background_normal: 'image/Button.png'
+	background_down: 'image/Button_down.png'
+	font_size: 18
+	#size: self.texture_size
+	font_name: 'Roboto-Bold'
+
+<Group>:
+	id: group
+	name: 'group'
+	box_list_g: box_list_g
+	scrol1: scrol1
+	title_course: title_course
+	label: label.text
+	on_pre_enter: self.list_group(root.num_course)
+	
+	BoxLayout:
+		id: box_group
+		orientation: 'vertical'
+		padding: 10, 0, 10, 0
+		canvas.before:
+			Color:
+				rgba: 0, 0, 0, 1
+			Line:
+				width: 1
+				rectangle: self.x, self.y, self.width, self.height
+		AnchorLayout:
+			id: title_course
+
+			anchor_x: 'left' 
+			anchor_y: 'center'
+			size_hint: (1, 0.1)
+			CLabel:
+				id: label
+				text: "Выберите группу"
+				#text_size: self.size
+				#size_hint: (1.0, 1.0)
+				font_name: "Roboto-Bold"
+				color: (0, .36, .63, 1)
+				font_size: 30
+				halign: "center"
+				valign: "center"
+				padding: (0, 0)
+		ScrollView:
+			id: scrol1
+			size: self.size		
+
+			GridLayout:
+				id: box_list_g
+				size_hint_y: None
+				cols: 2
+				spacing: 50
+				padding: 0, 10, 0, 10
+
+<Lessons>:
+	name: 'lessons'
+	box_grid: box_grid
+	title_course: title_course
+	BoxLayout:
+		orientation: 'vertical'
+		AnchorLayout:
+			id: title_course
+			canvas.before:
+				Color:
+					rgba: 0, 0, 0, 1
+				Line:
+					width: 1
+					rectangle: self.x, self.y, self.width, self.height
+			anchor_x: 'left' 
+			anchor_y: 'center'
+			size_hint: (1, .1)
+			
+
+		ScrollView:
+			id: scrol11
+			size: self.size		
+			GridLayout:
+				id: box_grid
+				size_hint_y: None
+				cols: 1
+				# spacing: 10
+				#padding: 0, 50, 0, 50
+			
+<CustomLabel>:
+	id: root.text
+	canvas.before:
+		Color:
+			rgba: (.82, .11, .97, 1)
+		Rectangle:
+			size: root.width, 44
+			pos: self.pos
+	text: root.text
+	text_size: self.size
+	color: (1, 1, 1, 1)
+	font_size:  20
+	#height: self.size[0]
+	size: self.texture_size
+	size_hint_y: None
+	#text_size= (self.width, None)
+	halign: "left"
+	valign: "bottom"
+	padding_y: 10
+	padding_x: 10
+	bold: True
+
+<CLabel>:
+	id: root.text
+	text: root.text
+
+	size: self.texture_size
+	font_size:  16
+	color: (0, 0, 0, 1)
+	size_hint_y: None
+	text_size: self.size
+	halign: "center"
+	valign: "bottom"
+	font_name: 'Roboto-Bold'
+	bold: True
+
+<CBoxLayout>:
+	id: root.text
+	canvas.before:
+		Color:
+			rgba: 0, 0, 0, 1
+		Line:
+			width: 1
+			rectangle: self.x, self.y, self.width, self.height
+
